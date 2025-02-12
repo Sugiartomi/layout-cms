@@ -1,0 +1,14 @@
+version: '3'
+services:
+
+    arbitgo-cms:
+      image: 'registry.digitalexchange.id/tomi.sugiarto/arbitgo-cms:dev'
+      restart: unless-stopped
+      ports:
+        - '3021:3021'
+      networks:
+        - arbitgo
+
+networks:
+    arbitgo:
+      driver: bridge
