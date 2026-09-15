@@ -1,87 +1,101 @@
-import { Bell } from "react-bootstrap-icons";
 import img_logo from "../../logo.svg";
 import img_bell from "../../assets/img/bell.png";
 import img_arbitgo from "../../assets/img/arbitgo-1.png";
 import img_avatar from "../../assets/img/avatar.png";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Notifications from "./Notification";
+import useLocalData from "../../hooks/useLocalData";
+import { List, ArrowCounterclockwise } from "react-bootstrap-icons";
+import { resetDemo } from "../../data/initStorage";
 
-export default function Navbar() {
+export default function Navbar({ onMenuToggle }) {
 	const navigate = useNavigate();
-	const [data, setData] = useState([
-		// {
-		// 	image: img_avatar,
-		// 	message: "Kameshwaran S had shared a feedback with you.",
-		// 	detailPage: "/",
-		// },
-		// {
-		// 	image: img_avatar,
-		// 	message: "Kameshwaran S had shared a feedback with you.",
-		// 	detailPage: "/",
-		// },
-		{
-			image: img_logo,
-			message: "withdrawal request has been approved ( ID : UH75JGFDU ).",
-			detailPage: "/profile",
-			// receivedTime: "12h ago",
-		},
-		{
-			image: img_avatar,
-			message: (
-				<p className="fs-16">
-					Kameshwaran S had shared a <span style={{ color: "#7ac2fa" }}>feedback</span>{" "}
-					with you.
-				</p>
-			),
-			detailPage: "/",
-		},
-		{
-			image: "https://imgs.search.brave.com/xoiuBYa9Hjew8o50pO9qYzhtwTNzS-8QuXGO6QoVWco/rs:fit:512:512:1/g:ce/aHR0cHM6Ly9jZG4y/Lmljb25maW5kZXIu/Y29tL2RhdGEvaWNv/bnMvYXZhdGFycy05/OS82Mi9hdmF0YXIt/MzcwLTQ1NjMyMi01/MTIucG5n",
-			message: (
-				<p className="fs-16">
-					John Samuel had shared a <span style={{ color: "#7ac2fa" }}>feedback</span> with
-					you.
-				</p>
-			),
-			detailPage: "/",
-		},
-		{
-			image: "https://imgs.search.brave.com/ptPTAGC-GhFAKBDHmplJ6fFH2jzWRRl6YjbYM5ipytw/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93d3cu/cG5na2l0LmNvbS9w/bmcvZnVsbC8xMTUt/MTE1MDM0Ml91c2Vy/LWF2YXRhci1pY29u/LWljb25vcy1kZS1t/dWplcmVzLWEtY29s/b3IucG5n",
-			message: (
-				<p className="fs-16">
-					Sarah Kameela had shared a <span style={{ color: "#7ac2fa" }}>feedback</span>{" "}
-					with you.
-				</p>
-			),
-			detailPage: "/",
-		},
-	]);
+	const [notifications, setNotifications] = useLocalData("notifications", []);
+	const [search, setSearch] = useState("");
+
+	const data = useMemo(
+		() =>
+			notifications.map((n) => ({
+				image: n.id === "notif_1" ? img_logo : img_avatar,
+				message: <p className="fs-16 mb-0">{n.message}</p>,
+				detailPage: n.detailPage || "/dashboard",
+			})),
+		[notifications]
+	);
+
+	const today = new Date().toLocaleDateString("en-GB", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
+
+	const handleReset = () => {
+		if (
+			window.confirm(
+				"Reset demo? Local storage will be cleared and the intro bumper will play again."
+			)
+		) {
+			resetDemo();
+		}
+	};
+
 	return (
 		<>
-			<div className="container-fluid">
-				<div className="row">
-					<div className="col-2 p-0 border-end">
+			<div className="container-fluid px-0">
+				<div className="row g-0">
+					<div className="col-lg-2 p-0 border-end d-none d-lg-block">
 						<div
 							className="d-flex justify-content-center align-items-center"
 							style={{ height: 80 }}
 						>
-							<img src={img_arbitgo} alt="" className="img-fluid w-75" />
+							<img
+								src={img_arbitgo}
+								alt="Arbitgo"
+								className="img-fluid w-75 pointer"
+								onClick={() => navigate("/dashboard")}
+							/>
 						</div>
 					</div>
-					<div className="col p-0 border-start">
-						<div className="d-flex justify-content-between align-items-center h-100">
+					<div className="col-12 col-lg-10 p-0 border-start">
+						{/* Desktop navbar */}
+						<div
+							className="d-none d-lg-flex justify-content-between align-items-center h-100 px-0"
+							style={{ minHeight: 80 }}
+						>
 							<div className="ms-3">
 								<div className="font-inter fw-600 fs-18">Welcome</div>
-								<div className="font-inter fw-400 fs-12">7th of August, 2023</div>
+								<div className="font-inter fw-400 fs-12">{today}</div>
 							</div>
 							<div className="d-flex align-items-center">
-								<form className="d-flex" role="search">
+								<button
+									type="button"
+									className="btn btn-sm btn-outline-secondary me-2 d-flex align-items-center"
+									title="Reset demo data & replay bumper"
+									onClick={handleReset}
+								>
+									<ArrowCounterclockwise className="me-1" />
+									Reset Demo
+								</button>
+								<form
+									className="d-flex"
+									role="search"
+									onSubmit={(e) => {
+										e.preventDefault();
+										if (search.trim()) {
+											navigate(
+												`/user-list?q=${encodeURIComponent(search.trim())}`
+											);
+										}
+									}}
+								>
 									<input
 										className="form-control me-2"
 										type="search"
 										placeholder="Search"
 										aria-label="Search"
+										value={search}
+										onChange={(e) => setSearch(e.target.value)}
 									/>
 								</form>
 								<div className="mx-2 mt-2">
@@ -92,71 +106,101 @@ export default function Navbar() {
 											title: "Notifications",
 											option: {
 												text: "View All",
-												onClick: () => console.log("Clicked"),
+												onClick: () => navigate("/dashboard"),
 											},
 										}}
-										markAsRead={(data) => {
-											console.log(data);
+										markAsRead={(item) => {
+											setNotifications((prev) =>
+												prev.map((n) =>
+													n.message === item?.message ||
+													(typeof item?.message === "object" &&
+														n.message.includes("feedback"))
+														? { ...n, read: true }
+														: n
+												)
+											);
 										}}
 									/>
 								</div>
-
 								<div className="d-flex justify-content-end me-4">
-									<li className="nav-item dropdown  list-unstyled pointer">
+									<li className="nav-item dropdown list-unstyled pointer">
 										<img
 											src={img_avatar}
 											style={{ width: 35, height: 35 }}
 											className="img-fluid p-1 rounded-circle border nav-link"
 											data-bs-toggle="dropdown"
 											aria-expanded="false"
+											alt="avatar"
 										/>
-										<ul className="dropdown-menu  list-unstyled">
-											{/* <li>
+										<ul className="dropdown-menu dropdown-menu-end list-unstyled">
+											<li>
 												<a
 													className="dropdown-item pointer"
-													onClick={() => navigate("/my-profile")}
+													onClick={() => navigate("/dashboard")}
 												>
-													Profil Sayaaaa
+													Dashboard
 												</a>
 											</li>
 											<li>
 												<a
 													className="dropdown-item pointer"
-													onClick={() => navigate("/security")}
+													onClick={handleReset}
 												>
-													Keamanan
-												</a>
-											</li>
-											<li>
-												<a
-													className="dropdown-item pointer"
-													onClick={() => navigate("/reference")}
-												>
-													Referensi
-												</a>
-											</li>
-											<li>
-												<a
-													className="dropdown-item pointer"
-													onClick={() => navigate("/reward")}
-												>
-													Reward
-												</a>
-											</li>
-											<li>
-												<hr className="dropdown-divider" />
-											</li> */}
-											<li>
-												<a
-													className="dropdown-item pointer"
-													onClick={() => navigate("/")}
-												>
-													Logout
+													Reset Demo
 												</a>
 											</li>
 										</ul>
 									</li>
 								</div>
+							</div>
+						</div>
+
+						{/* Mobile navbar: burger · logo · bell only */}
+						<div
+							className="d-flex d-lg-none justify-content-between align-items-center px-2"
+							style={{ minHeight: 64 }}
+						>
+							<div className="d-flex align-items-center">
+								<button
+									type="button"
+									className="btn btn-sm me-2 border"
+									aria-label="Open menu"
+									onClick={onMenuToggle}
+								>
+									<List size={20} />
+								</button>
+								<img
+									src={img_arbitgo}
+									alt="Arbitgo"
+									className="img-fluid pointer"
+									style={{ height: 32, maxWidth: 140, objectFit: "contain" }}
+									onClick={() => navigate("/dashboard")}
+								/>
+							</div>
+							<div className="d-flex align-items-center ag-notif-mobile">
+								<Notifications
+									icon={img_bell}
+									data={data}
+									width="100%"
+									header={{
+										title: "Notifications",
+										option: {
+											text: "View All",
+											onClick: () => navigate("/dashboard"),
+										},
+									}}
+									markAsRead={(item) => {
+										setNotifications((prev) =>
+											prev.map((n) =>
+												n.message === item?.message ||
+												(typeof item?.message === "object" &&
+													n.message.includes("feedback"))
+													? { ...n, read: true }
+													: n
+											)
+										);
+									}}
+								/>
 							</div>
 						</div>
 					</div>

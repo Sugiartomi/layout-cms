@@ -1,41 +1,93 @@
 import React from "react";
 import Highcharts from "highcharts";
 
+const ASSETS_SERIES = [
+	{
+		name: "BTC/Bitcoin",
+		data: [
+			2, 9, 13, 50, 170, 299, 438, 841, 1169, 1703, 2422, 3692, 5543, 7345, 12298,
+			18638, 22229, 25540, 28133, 29463, 31139, 27552, 26008, 25830, 26516, 27835,
+			25542, 24138, 23208, 22217, 19008, 13708, 10979, 10577, 10027, 8570, 5273,
+			4897, 4018, 3750,
+		],
+	},
+	{
+		name: "ETH/Ethereum",
+		data: [
+			1, 5, 25, 50, 120, 150, 200, 426, 660, 863, 1048, 1627, 2492, 3346, 4259,
+			5242, 6144, 7091, 8400, 9490, 10671, 13279, 15878, 19235, 22165, 26169,
+			30665, 35130, 40159, 35078, 26734, 18179, 13188, 10114, 8038, 6286, 5215,
+			4650, 4330, 4477,
+		],
+	},
+	{
+		name: "USDT/Tether",
+		data: [
+			1, 5, 20, 50, 100, 126, 60, 248, 627, 492, 259, 144, 400, 671, 3279, 5878,
+			9235, 8281, 5665, 5130, 7159, 5078, 9154, 6339, 4368, 2188, 1114, 1000,
+			2929, 4215, 6750, 8600, 7350, 8330, 10495, 11477, 9800, 10200, 11050, 12100,
+		],
+	},
+];
+
+const MARKET_SERIES = [
+	{
+		name: "Buy Volume",
+		color: "#20CB6F",
+		data: [
+			820, 940, 1100, 980, 1250, 1420, 1380, 1600, 1750, 1680, 1900, 2100, 1980,
+			2200, 2450, 2300, 2600, 2750, 2550, 2900, 3100, 2950, 3200, 3400, 3250,
+			3600, 3800, 3650, 3900, 4100, 4000, 4300, 4500, 4400, 4700, 4900, 4800,
+			5100, 5300, 5200,
+		],
+	},
+	{
+		name: "Sell Volume",
+		color: "#F4B946",
+		data: [
+			700, 810, 900, 880, 1050, 1180, 1220, 1400, 1520, 1480, 1650, 1800, 1720,
+			1950, 2100, 2050, 2280, 2400, 2320, 2550, 2700, 2620, 2850, 3000, 2920,
+			3150, 3300, 3200, 3450, 3600, 3520, 3750, 3900, 3820, 4050, 4200, 4120,
+			4350, 4500, 4420,
+		],
+	},
+	{
+		name: "Open Interest",
+		color: "#0052D9",
+		data: [
+			1200, 1350, 1500, 1480, 1620, 1780, 1850, 2000, 2150, 2100, 2300, 2500,
+			2450, 2650, 2800, 2750, 2950, 3100, 3050, 3250, 3400, 3350, 3550, 3700,
+			3650, 3850, 4000, 3950, 4150, 4300, 4250, 4450, 4600, 4550, 4750, 4900,
+			4850, 5050, 5200, 5150,
+		],
+	},
+];
+
 class AreaChart extends React.Component {
-    
-	highChartsRender2() {
+	chartId = "arbitgo-area-chart";
+
+	renderChart() {
+		const mode = this.props.mode || "assets";
+		const isMarket = mode === "market";
+
 		Highcharts.chart({
 			chart: {
 				type: "area",
-				renderTo: "atmospheric-composition-2",
+				renderTo: this.chartId,
+				height: 360,
 			},
-			accessibility: {
-				description:
-					"Image description: An area chart compares the nuclear stockpiles of the USA and the USSR/Russia between 1945 and 2017. The number of nuclear weapons is plotted on the Y-axis and the years on the X-axis. The chart is interactive, and the year-on-year stockpile levels can be traced for each country. The US has a stockpile of 6 nuclear weapons at the dawn of the nuclear age in 1945. This number has gradually increased to 369 by 1950 when the USSR enters the arms race with 6 weapons. At this point, the US starts to rapidly build its stockpile culminating in 32,040 warheads by 1966 compared to the USSR’s 7,089. From this peak in 1966, the US stockpile gradually decreases as the USSR’s stockpile expands. By 1978 the USSR has closed the nuclear gap at 25,393. The USSR stockpile continues to grow until it reaches a peak of 45,000 in 1986 compared to the US arsenal of 24,401. From 1986, the nuclear stockpiles of both countries start to fall. By 2000, the numbers have fallen to 10,577 and 21,000 for the US and Russia, respectively. The decreases continue until 2017 at which point the US holds 4,018 weapons compared to Russia’s 4,500.",
-			},
-			title: {
-				text: " ",
-			},
-			// subtitle: {
-			// 		text:
-			// 			'Source: <a href="https://fas.org/issues/nuclear-weapons/status-world-nuclear-forces/" ' +
-			// 			'target="_blank">FAS</a>',
-			// },
+			title: { text: " " },
 			xAxis: {
 				allowDecimals: false,
 				labels: {
 					formatter: function () {
-						return this.value; // clean, unformatted number for year
+						return this.value;
 					},
-				},
-				accessibility: {
-					rangeDescription: "Range: 1940 to 2017.",
 				},
 			},
 			yAxis: {
 				title: {
-					text: "Your Assets",
-					text: "",
+					text: isMarket ? "Market Volume" : "Your Assets",
 				},
 				labels: {
 					formatter: function () {
@@ -44,305 +96,43 @@ class AreaChart extends React.Component {
 				},
 			},
 			tooltip: {
-				pointFormat:
-					"{series.name} had stockpiled <b>{point.y:,.0f}</b><br/>warheads in {point.x}",
+				pointFormat: isMarket
+					? "{series.name}: <b>{point.y:,.0f}</b>"
+					: "{series.name} held <b>{point.y:,.0f}</b>",
 			},
-
-			credits: {
-				enabled: false,
-			},
+			credits: { enabled: false },
 			plotOptions: {
 				area: {
 					pointStart: 1,
 					marker: {
 						enabled: false,
-						symbol: "circle ",
-						radius: 1,
-						states: {
-							hover: {
-								enabled: true,
-							},
-						},
+						symbol: "circle",
+						radius: 2,
+						states: { hover: { enabled: true } },
 					},
 				},
 			},
-			series: [
-				{
-                    test : "haha",
-					name: "BTC/Bitcoin",
-					data: [
-						null,
-						null,
-						null,
-						null,
-						null,
-						2,
-						9,
-						13,
-						50,
-						170,
-						299,
-						438,
-						841,
-						1169,
-						1703,
-						2422,
-						3692,
-						5543,
-						7345,
-						12298,
-						18638,
-						22229,
-						25540,
-						28133,
-						29463,
-						31139,
-						31175,
-						31255,
-						29561,
-						27552,
-						26008,
-						25830,
-						26516,
-						27835,
-						28537,
-						27519,
-						25914,
-						25542,
-						24418,
-						24138,
-						24104,
-						23208,
-						22886,
-						23305,
-						23459,
-						23368,
-						23317,
-						23575,
-						23205,
-						22217,
-						21392,
-						19008,
-						13708,
-						11511,
-						10979,
-						10904,
-						11011,
-						10903,
-						10732,
-						10685,
-						10577,
-						10526,
-						10457,
-						10027,
-						8570,
-						8360,
-						7853,
-						5709,
-						5273,
-						5113,
-						5066,
-						4897,
-						4881,
-						4804,
-						4717,
-						4571,
-						4018,
-						3822,
-						3785,
-						3805,
-						3750,
-						3708,
-						3708,
-					],
-				},
-				{
-					name: "ETH/Ethereum",
-					data: [
-						null,
-						null,
-						null,
-						null,
-						null,
-						null,
-						null,
-						null,
-						null,
-						1,
-						5,
-						25,
-						50,
-						120,
-						150,
-						200,
-						426,
-						660,
-						863,
-						1048,
-						1627,
-						2492,
-						3346,
-						4259,
-						5242,
-						6144,
-						7091,
-						8400,
-						9490,
-						10671,
-						11736,
-						13279,
-						14600,
-						15878,
-						17286,
-						19235,
-						22165,
-						24281,
-						26169,
-						28258,
-						30665,
-						32146,
-						33486,
-						35130,
-						36825,
-						38582,
-						40159,
-						38107,
-						36538,
-						35078,
-						32980,
-						29154,
-						26734,
-						24403,
-						21339,
-						18179,
-						15942,
-						15442,
-						14368,
-						13188,
-						12188,
-						11152,
-						10114,
-						9076,
-						8038,
-						7000,
-						6643,
-						6286,
-						5929,
-						5527,
-						5215,
-						4858,
-						4750,
-						4650,
-						4600,
-						4500,
-						4490,
-						4300,
-						4350,
-						4330,
-						4310,
-						4495,
-						4477,
-					],
-				},
-				{
-					name: "USDT/Tether",
-					data: [
-						null,
-						null,
-						null,
-						null,
-						null,
-						null,
-						null,
-						null,
-						null,
-						1,
-						1,
-						5,
-						1,
-						20,
-						50,
-						100,
-						126,
-						60,
-						63,
-						248,
-						627,
-						492,
-						346,
-						259,
-						242,
-						144,
-						91,
-						400,
-						490,
-						671,
-						736,
-						3279,
-						4600,
-						5878,
-						7286,
-						9235,
-						10165,
-						8281,
-						6169,
-						8258,
-						5665,
-						4146,
-						3486,
-						5130,
-						6825,
-						8582,
-						7159,
-						8107,
-						6538,
-						5078,
-						7980,
-						9154,
-						6734,
-						4403,
-						6339,
-						8179,
-						5942,
-						5442,
-						4368,
-						3188,
-						2188,
-						1152,
-						1114,
-						1076,
-						1038,
-						1000,
-						643,
-						1286,
-						2929,
-						3527,
-						4215,
-						5858,
-						6750,
-						7650,
-						8600,
-						9500,
-						8490,
-						6300,
-						7350,
-						8330,
-						9310,
-						10495,
-						11477,
-					],
-				},
-			],
+			series: isMarket ? MARKET_SERIES : ASSETS_SERIES,
 		});
 	}
 
 	componentDidMount() {
-		this.highChartsRender2();
+		this.renderChart();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.mode !== this.props.mode) {
+			this.renderChart();
+		}
 	}
 
 	render() {
 		return (
-			<div id="atmospheric-composition-2" className="p-0 m-0" style={{ height: "400px" }} />
+			<div
+				id={this.chartId}
+				className="p-0 m-0"
+				style={{ height: 360, width: "100%" }}
+			/>
 		);
 	}
 }

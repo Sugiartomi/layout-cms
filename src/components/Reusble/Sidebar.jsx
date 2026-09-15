@@ -1,11 +1,33 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import img_avatar from "../../assets/img/avatar.png";
+import { resetDemo } from "../../data/initStorage";
 
-export default function Sidebar() {
+export default function Sidebar({ onNavigate }) {
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
-	console.log(pathname);
 	const [collapse, setCollapse] = useState(true);
+
+	const today = new Date().toLocaleDateString("en-GB", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
+
+	const go = (path) => {
+		navigate(path);
+		if (onNavigate) onNavigate();
+	};
+
+	const handleReset = () => {
+		if (
+			window.confirm(
+				"Reset demo? Local storage will be cleared and the intro bumper will play again."
+			)
+		) {
+			resetDemo();
+		}
+	};
 	return (
 		<>
 			<div className="px-3 border-top">
@@ -14,7 +36,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/dashboard")}
+					onClick={() => go("/dashboard")}
 				>
 					<p className={pathname === "/dashboard" ? "mb-0 text-primary fw-bold" : "mb-0"}>
 						Dashboard
@@ -22,7 +44,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/user-list")}
+					onClick={() => go("/user-list")}
 				>
 					<p
 						className={
@@ -36,7 +58,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/user-admin")}
+					onClick={() => go("/user-admin")}
 				>
 					<p
 						className={
@@ -50,7 +72,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/role-permission")}
+					onClick={() => go("/role-permission")}
 				>
 					<p
 						className={
@@ -63,7 +85,7 @@ export default function Sidebar() {
 
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/kyc-verification")}
+					onClick={() => go("/kyc-verification")}
 				>
 					<p
 						className={
@@ -75,7 +97,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/kyc-video")}
+					onClick={() => go("/kyc-video")}
 				>
 					<p className={pathname === "/kyc-video" ? "mb-0 text-primary fw-bold" : "mb-0"}>
 						Approval KYC Video
@@ -89,7 +111,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/refferal-point")}
+					onClick={() => go("/refferal-point")}
 				>
 					<p
 						className={
@@ -101,7 +123,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/achievement-point")}
+					onClick={() => go("/achievement-point")}
 				>
 					<p
 						className={
@@ -113,7 +135,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/reward-point")}
+					onClick={() => go("/reward-point")}
 				>
 					<p
 						className={
@@ -149,7 +171,7 @@ export default function Sidebar() {
 						</div>
 						<div
 							className="font-inter fw-600 fs-16 text-muted my-3 ms-3 pointer"
-							onClick={() => navigate("/app-package")}
+							onClick={() => go("/app-package")}
 						>
 							<p
 								className={
@@ -163,7 +185,7 @@ export default function Sidebar() {
 						</div>
 						<div
 							className="font-inter fw-600 fs-16 text-muted my-3 ms-3 pointer"
-							onClick={() => navigate("/activation-key")}
+							onClick={() => go("/activation-key")}
 						>
 							<p
 								className={
@@ -177,7 +199,7 @@ export default function Sidebar() {
 						</div>
 						<div
 							className="font-inter fw-600 fs-16 text-muted my-3 ms-3 pointer"
-							onClick={() => navigate("/crystal")}
+							onClick={() => go("/crystal")}
 						>
 							<p
 								className={
@@ -209,7 +231,7 @@ export default function Sidebar() {
 
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/purchase-history")}
+					onClick={() => go("/purchase-history")}
 				>
 					<p
 						className={
@@ -221,7 +243,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/point-cashout")}
+					onClick={() => go("/point-cashout")}
 				>
 					<p
 						className={
@@ -233,7 +255,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/payment-approval")}
+					onClick={() => go("/payment-approval")}
 				>
 					<p
 						className={
@@ -245,7 +267,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/promotion-banner")}
+					onClick={() => go("/promotion-banner")}
 				>
 					<p
 						className={
@@ -257,7 +279,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/support-center")}
+					onClick={() => go("/support-center")}
 				>
 					<p
 						className={
@@ -269,7 +291,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/shareable-content")}
+					onClick={() => go("/shareable-content")}
 				>
 					<p
 						className={
@@ -281,7 +303,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/point-summary")}
+					onClick={() => go("/point-summary")}
 				>
 					<p
 						className={
@@ -293,7 +315,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/company-omzet")}
+					onClick={() => go("/company-omzet")}
 				>
 					<p
 						className={
@@ -305,7 +327,7 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/user-omzet")}
+					onClick={() => go("/user-omzet")}
 				>
 					<p
 						className={
@@ -317,11 +339,42 @@ export default function Sidebar() {
 				</div>
 				<div
 					className="font-inter fw-600 fs-16 text-muted my-3 pointer"
-					onClick={() => navigate("/setting")}
+					onClick={() => go("/setting")}
 				>
 					<p className={pathname === "/setting" ? "mb-0 text-primary fw-bold" : "mb-0"}>
 						Setting
 					</p>
+				</div>
+
+				{/* Mobile: profile + reset (hidden on desktop navbar already has these) */}
+				<div className="d-lg-none border-top pt-3 mt-2 mb-4">
+					<div className="font-inter fw-600 fs-18 my-3" style={{ color: "#A9A9A9" }}>
+						Account
+					</div>
+					<div className="d-flex align-items-center mb-3">
+						<img
+							src={img_avatar}
+							alt="avatar"
+							className="rounded-circle border me-2"
+							style={{ width: 40, height: 40 }}
+						/>
+						<div>
+							<div className="font-inter fw-600 fs-16">Welcome</div>
+							<div className="font-inter fw-400 fs-12 text-muted">{today}</div>
+						</div>
+					</div>
+					<div
+						className="font-inter fw-600 fs-16 text-muted my-3 pointer"
+						onClick={() => go("/dashboard")}
+					>
+						<p className="mb-0">Profile / Dashboard</p>
+					</div>
+					<div
+						className="font-inter fw-600 fs-16 text-danger my-3 pointer"
+						onClick={handleReset}
+					>
+						<p className="mb-0">Reset Demo</p>
+					</div>
 				</div>
 			</div>
 		</>

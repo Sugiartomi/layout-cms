@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-export default function AppPackageBuyModal() {
+export default function AppPackageBuyModal({ onConfirm }) {
 	const navigate = useNavigate();
 	return (
 		<>
@@ -43,7 +43,10 @@ export default function AppPackageBuyModal() {
 								class="btn text-white fw-bold"
 								style={{ backgroundColor: "#2752E7" }}
 								data-bs-dismiss="modal"
-								onClick={() => navigate("/app-package/report")}
+								onClick={() => {
+									if (onConfirm) onConfirm();
+									else navigate("/app-package/report");
+								}}
 							>
 								Yes
 							</button>

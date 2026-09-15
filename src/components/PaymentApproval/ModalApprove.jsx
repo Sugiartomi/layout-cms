@@ -1,4 +1,4 @@
-export default function PaymentApproveModal({setStatus}) {
+export default function PaymentApproveModal({ onConfirm }) {
 	return (
 		<>
 			<div
@@ -11,7 +11,10 @@ export default function PaymentApproveModal({setStatus}) {
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
 						<div class="modal-header bg-primary">
-							<h1 class="modal-title fs-5 text-white font-inter fw-bold" id="PaymentApproveLabel">
+							<h1
+								class="modal-title fs-5 text-white font-inter fw-bold"
+								id="PaymentApproveLabel"
+							>
 								Approved
 							</h1>
 							<button
@@ -26,7 +29,12 @@ export default function PaymentApproveModal({setStatus}) {
 							<button type="button" class="btn border" data-bs-dismiss="modal">
 								No
 							</button>
-							<button type="button" class="btn btn-primary"  data-bs-dismiss="modal" onClick={() => setStatus("approved")}>
+							<button
+								type="button"
+								class="btn btn-primary"
+								data-bs-dismiss="modal"
+								onClick={() => onConfirm && onConfirm()}
+							>
 								Yes
 							</button>
 						</div>

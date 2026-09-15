@@ -1,4 +1,4 @@
-export default function PaymentRejectModal() {
+export default function PaymentRejectModal({ onConfirm }) {
 	return (
 		<>
 			<div
@@ -32,7 +32,12 @@ export default function PaymentRejectModal() {
 							<button type="button" class="btn border" data-bs-dismiss="modal">
 								No
 							</button>
-							<button type="button" class="btn btn-danger">
+							<button
+								type="button"
+								class="btn btn-danger"
+								data-bs-dismiss="modal"
+								onClick={() => onConfirm && onConfirm()}
+							>
 								Yes
 							</button>
 						</div>

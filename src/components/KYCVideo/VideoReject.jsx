@@ -1,38 +1,43 @@
-export default function VideoRejectModal() {
+export default function VideoRejectModal({ onConfirm }) {
 	return (
 		<>
 			<div
-				class="modal fade"
+				className="modal fade"
 				id="VideoReject"
-				tabindex="-1"
+				tabIndex="-1"
 				aria-labelledby="VideoRejectLabel"
 				aria-hidden="true"
 			>
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-header bg-danger">
+				<div className="modal-dialog modal-dialog-centered">
+					<div className="modal-content">
+						<div className="modal-header bg-danger">
 							<h1
-								class="modal-title fs-5 text-white font-inter fw-bold"
+								className="modal-title fs-5 text-white font-inter fw-bold"
 								id="VideoRejectLabel"
 							>
 								Approved
 							</h1>
 							<button
 								type="button"
-								class="btn-close"
+								className="btn-close"
 								data-bs-dismiss="modal"
 								aria-label="Close"
 							></button>
 						</div>
-						<div class="modal-body font-inter">
+						<div className="modal-body font-inter">
 							<p>Are you sure want to Reject ?</p>
-							<textarea class="form-control" aria-label="With textarea"></textarea>
+							<textarea className="form-control" aria-label="With textarea"></textarea>
 						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn border" data-bs-dismiss="modal">
+						<div className="modal-footer">
+							<button type="button" className="btn border" data-bs-dismiss="modal">
 								No
 							</button>
-							<button type="button" class="btn btn-danger">
+							<button
+								type="button"
+								className="btn btn-danger"
+								data-bs-dismiss="modal"
+								onClick={onConfirm}
+							>
 								Yes
 							</button>
 						</div>

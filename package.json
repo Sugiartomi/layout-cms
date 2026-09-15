@@ -12,7 +12,6 @@
     "react-bootstrap-icons": "^1.10.2",
     "react-dom": "^18.2.0",
     "react-datepicker": "^4.10.0",
-    "react-otp-form": "^1.0.2",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.0",
     "react-scripts": "5.0.1",
@@ -21,8 +20,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "set port=3021 && react-scripts start",
-    "start_linux": "export PORT=3021 && react-scripts start",
+    "start": "PORT=3021 react-scripts start",
+    "start_linux": "PORT=3021 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

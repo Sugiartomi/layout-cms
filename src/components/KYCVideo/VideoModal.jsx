@@ -1,14 +1,13 @@
-import img_ktp from "../../assets/img/ktp.svg";
-import img_people from "../../assets/img/people-1.svg";
 import VideoApproveModal from "./VideoApprove";
 import VideoRejectModal from "./VideoReject";
-export default function KYCVideoModal() {
+
+export default function KYCVideoModal({ item, onApprove, onReject }) {
 	return (
 		<>
 			<div
 				className="modal modal-xl fade"
 				id="KYCVideoModal"
-				tabindex="-1"
+				tabIndex="-1"
 				aria-labelledby="KYCVideoModalLabel"
 				aria-hidden="true"
 			>
@@ -42,11 +41,11 @@ export default function KYCVideoModal() {
 											</p>
 										</div>
 										<div className="col  font-inter fw-400 fs-16">
-											<p>Thya Septiani</p>
-											<p>thya@gmail.com</p>
-											<p>test123</p>
-											<p>081234567890</p>
-											<p>video.3gp</p>
+											<p>{item?.name || "-"}</p>
+											<p>{item?.email || "-"}</p>
+											<p>{item?.username || "-"}</p>
+											<p>{item?.phone || "-"}</p>
+											<p>{item?.video || "video.3gp"}</p>
 										</div>
 									</div>
 								</div>
@@ -88,8 +87,8 @@ export default function KYCVideoModal() {
 					</div>
 				</div>
 			</div>
-			<VideoApproveModal />
-			<VideoRejectModal />
+			<VideoApproveModal onConfirm={onApprove} />
+			<VideoRejectModal onConfirm={onReject} />
 		</>
 	);
 }

@@ -1,6 +1,8 @@
 import "./assets/css/index.css";
-import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
+import { useState } from "react";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import DemoIntro from "./components/Reusble/DemoIntro";
+import { BUMPER_SESSION_KEY } from "./data/storage";
 import Dashboard from "./pages/Dashboard";
 import UserList from "./pages/UserList";
 import UserListDetail from "./pages/UserListDetail";
@@ -33,45 +35,61 @@ import CompanyOmzet from "./pages/CompanyOmzet";
 import UserOmzet from "./pages/UserOmzet";
 import Setting from "./pages/Setting";
 
-
 function App() {
+	const navigate = useNavigate();
+	const [showBumper, setShowBumper] = useState(
+		() => sessionStorage.getItem(BUMPER_SESSION_KEY) !== "1"
+	);
+
+	const finishBumper = () => {
+		sessionStorage.setItem(BUMPER_SESSION_KEY, "1");
+		setShowBumper(false);
+		navigate("/dashboard", { replace: true });
+	};
+
 	return (
 		<div className="App">
-			<Routes>
-				<Route path="/" element={<Login />} />
-				<Route path="/login" element={<Login />} />
-				<Route path="/dashboard" element={<Dashboard />} />
-				<Route path="/user-list" element={<UserList />} />
-				<Route path="/user-list/account" element={<UserListDetail />} />
-				<Route path="/user-admin" element={<UserAdmin />} />
-				<Route path="/user-admin/account" element={<UserAdminDetail />} />
-				<Route path="/add-admin" element={<AddAdmin />} />
-				<Route path="/role-permission" element={<Permission />} />
-				<Route path="/kyc-verification" element={<KYCVerification />} />
-				<Route path="/kyc-video" element={<KYCVideo />} />
-				<Route path="/refferal-point" element={<RefferalPoint />} />
-				<Route path="/achievement-point" element={<AchievementPoint />} />
-				<Route path="/reward-point" element={<RewardPoint />} />
-				<Route path="/app-package" element={<AppPackage />} />
-				<Route path="/app-package/report" element={<PurchaseReportAppPackage />} />
-				<Route path="/crystal" element={<Crystal />} />
-				<Route path="/crystal/report" element={<PurchaseReportCrystal />} />
-				<Route path="/activation-key" element={<ActivationKey />} />
-				<Route path="/activation-key/report" element={<PurchaseReportActivationKey />} />
-				<Route path="/purchase-history" element={<PurchaseHistory />} />
-				<Route path="/point-cashout" element={<PointCashout />} />
-				<Route path="/payment-approval" element={<PaymentApproval />} />
-				<Route path="/promotion-banner" element={<PromotionBanner />} />
-				<Route path="/promotion-banner/add" element={<AddPromotionBanner />} />
-				<Route path="/support-center" element={<SupportCenter />} />
-				<Route path="/support-center/add" element={<AddSupportCenter />} />
-				<Route path="/shareable-content" element={<ShareableContent />} />
-				<Route path="/shareable-content/add" element={<AddShareableContent />} />
-				<Route path="/point-summary" element={<PointSummary />} />
-				<Route path="/company-omzet" element={<CompanyOmzet />} />
-				<Route path="/user-omzet" element={<UserOmzet />} />
-				<Route path="/setting" element={<Setting />} />
-			</Routes>
+			{showBumper ? <DemoIntro onDone={finishBumper} /> : null}
+			{!showBumper ? (
+				<Routes>
+					<Route path="/" element={<Navigate to="/dashboard" replace />} />
+					<Route path="/login" element={<Navigate to="/dashboard" replace />} />
+					<Route path="/dashboard" element={<Dashboard />} />
+					<Route path="/user-list" element={<UserList />} />
+					<Route path="/user-list/account" element={<UserListDetail />} />
+					<Route path="/user-admin" element={<UserAdmin />} />
+					<Route path="/user-admin/account" element={<UserAdminDetail />} />
+					<Route path="/add-admin" element={<AddAdmin />} />
+					<Route path="/role-permission" element={<Permission />} />
+					<Route path="/kyc-verification" element={<KYCVerification />} />
+					<Route path="/kyc-video" element={<KYCVideo />} />
+					<Route path="/refferal-point" element={<RefferalPoint />} />
+					<Route path="/achievement-point" element={<AchievementPoint />} />
+					<Route path="/reward-point" element={<RewardPoint />} />
+					<Route path="/app-package" element={<AppPackage />} />
+					<Route path="/app-package/report" element={<PurchaseReportAppPackage />} />
+					<Route path="/crystal" element={<Crystal />} />
+					<Route path="/crystal/report" element={<PurchaseReportCrystal />} />
+					<Route path="/activation-key" element={<ActivationKey />} />
+					<Route
+						path="/activation-key/report"
+						element={<PurchaseReportActivationKey />}
+					/>
+					<Route path="/purchase-history" element={<PurchaseHistory />} />
+					<Route path="/point-cashout" element={<PointCashout />} />
+					<Route path="/payment-approval" element={<PaymentApproval />} />
+					<Route path="/promotion-banner" element={<PromotionBanner />} />
+					<Route path="/promotion-banner/add" element={<AddPromotionBanner />} />
+					<Route path="/support-center" element={<SupportCenter />} />
+					<Route path="/support-center/add" element={<AddSupportCenter />} />
+					<Route path="/shareable-content" element={<ShareableContent />} />
+					<Route path="/shareable-content/add" element={<AddShareableContent />} />
+					<Route path="/point-summary" element={<PointSummary />} />
+					<Route path="/company-omzet" element={<CompanyOmzet />} />
+					<Route path="/user-omzet" element={<UserOmzet />} />
+					<Route path="/setting" element={<Setting />} />
+				</Routes>
+			) : null}
 		</div>
 	);
 }

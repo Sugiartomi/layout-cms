@@ -2,13 +2,14 @@ import img_ktp from "../../assets/img/ktp.svg";
 import img_people from "../../assets/img/people-1.svg";
 import VerificationApproveModal from "./VerificationApprove";
 import VerificationRejectModal from "./VerificationReject";
-export default function KYCVerificationModal() {
+
+export default function KYCVerificationModal({ item, onApprove, onReject }) {
 	return (
 		<>
 			<div
 				className="modal modal-xl fade"
 				id="KYCVerificationModal"
-				tabindex="-1"
+				tabIndex="-1"
 				aria-labelledby="KYCVerificationModalLabel"
 				aria-hidden="true"
 			>
@@ -81,15 +82,15 @@ export default function KYCVerificationModal() {
 											</p>
 										</div>
 										<div className="col  font-inter fw-400 fs-16">
-											<p>Thya Septiani</p>
-											<p>Brooklyn</p>
-											<p>Female</p>
-											<p>Indonesia</p>
-											<p>Designer</p>
-											<p>Jl.santai</p>
-											<p>Ambon</p>
-											<p>Kab. Saliki</p>
-											<p>52145</p>
+											<p>{item?.name || "-"}</p>
+											<p>{item?.city || "-"}</p>
+											<p>{item?.gender || "-"}</p>
+											<p>{item?.country || "-"}</p>
+											<p>{item?.job || "-"}</p>
+											<p>{item?.address || "-"}</p>
+											<p>{item?.province || "-"}</p>
+											<p>{item?.city || "-"}</p>
+											<p>{item?.postalCode || "-"}</p>
 										</div>
 									</div>
 								</div>
@@ -115,9 +116,9 @@ export default function KYCVerificationModal() {
 											</p>
 										</div>
 										<div className="col  font-inter fw-400 fs-16">
-											<p>Hidayat</p>
-											<p>Brother</p>
-											<p>081234567890</p>
+											<p>{item?.emergencyContact || "-"}</p>
+											<p>{item?.emergencyRelation || "-"}</p>
+											<p>{item?.phone || "-"}</p>
 										</div>
 									</div>
 								</div>
@@ -133,16 +134,20 @@ export default function KYCVerificationModal() {
 							>
 								Approve
 							</button>
-							<button type="button" className="btn btn-danger px-4" data-bs-toggle="modal"
-								data-bs-target="#VerificationReject">
+							<button
+								type="button"
+								className="btn btn-danger px-4"
+								data-bs-toggle="modal"
+								data-bs-target="#VerificationReject"
+							>
 								Reject
 							</button>
 						</div>
 					</div>
 				</div>
 			</div>
-			<VerificationApproveModal />
-            <VerificationRejectModal/>
+			<VerificationApproveModal onConfirm={onApprove} />
+			<VerificationRejectModal onConfirm={onReject} />
 		</>
 	);
 }

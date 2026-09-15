@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-export default function ActivationKeyBuyModal() {
+export default function ActivationKeyBuyModal({ onConfirm }) {
 	const navigate = useNavigate();
 	return (
 		<>
@@ -43,7 +43,10 @@ export default function ActivationKeyBuyModal() {
 								class="btn text-white fw-bold"
 								style={{ backgroundColor: "#2752E7" }}
 								data-bs-dismiss="modal"
-								onClick={() => navigate("/activation-key/report")}
+								onClick={() => {
+									if (onConfirm) onConfirm();
+									else navigate("/activation-key/report");
+								}}
 							>
 								Yes
 							</button>

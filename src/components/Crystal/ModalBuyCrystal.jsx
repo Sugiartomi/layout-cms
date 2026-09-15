@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-export default function CrystalBuyModal() {
+export default function CrystalBuyModal({ onConfirm }) {
 	const navigate = useNavigate();
 	return (
 		<>
@@ -43,7 +43,10 @@ export default function CrystalBuyModal() {
 								class="btn text-white fw-bold"
 								style={{ backgroundColor: "#2752E7" }}
 								data-bs-dismiss="modal"
-								onClick={() => navigate("/crystal/report")}
+								onClick={() => {
+									if (onConfirm) onConfirm();
+									else navigate("/crystal/report");
+								}}
 							>
 								Yes
 							</button>
